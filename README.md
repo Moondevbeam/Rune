@@ -1,11 +1,11 @@
 # Rune Wallet
 
-[![CI](https://github.com/YOUR_USERNAME/Rune/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/Rune/actions/workflows/ci.yml)
+[![CI](https://github.com/moondevbeam/Rune/actions/workflows/ci.yml/badge.svg)](https://github.com/moondevbeam/Rune/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Self-custodial **multi-chain mobile wallet** (EVM, TRON, TON) built around **payment commitments** — track what you owe and what others owe you, then fulfill on the cheapest USDT rail. Powered by [Expo SDK 56](https://docs.expo.dev/) and the [Tether WDK](https://docs.tether.io/wdk/intro).
 
-> **Disclaimer:** Rune is an open-source **MVP / portfolio project**. It has **not** been professionally audited. Do **not** rely on it for large amounts of funds. See [SECURITY.md](SECURITY.md).
+> **Disclaimer:** Rune is an open-source **MVP / portfolio project**. It has **not** been professionally audited. Do **not** rely on it for large amounts of funds.
 
 ## Features
 
