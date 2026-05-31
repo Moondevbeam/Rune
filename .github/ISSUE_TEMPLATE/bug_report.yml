@@ -1,0 +1,38 @@
+name: Bug report
+description: Something is broken in the app or dev setup
+title: '[Bug]: '
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Reminder:** Do not paste mnemonics, PINs, or private keys.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform
+      placeholder: 'iOS 18 / Android 14 / Simulator'
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Rune version or commit
+      placeholder: 'main @ abc1234'
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs (redacted)
+      description: Remove any sensitive data before submitting.

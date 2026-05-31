@@ -21,6 +21,11 @@ expo-env.d.ts
 # Metro
 .metro-health-check*
 
+# WDK worklet bundle (generated via `npx wdk-worklet-bundler generate`)
+.wdk/
+.wdk-bundle/
+.npm-cache/
+
 # debug
 npm-debug.*
 yarn-debug.*
@@ -31,7 +36,13 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
 .env*.local
+.env.example
+
+# private / coursework docs (not part of the OSS repo)
+*.docx
+WDK-Wallet-App-Documento.docx
 
 # typescript
 *.tsbuildinfo
@@ -41,3 +52,4 @@ example
 # generated native folders
 /ios
 /android
+

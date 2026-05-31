@@ -1,56 +1,118 @@
-# Welcome to your Expo app 👋
+# Rune Wallet
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+[![CI](https://github.com/YOUR_USERNAME/Rune/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/Rune/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## Get started
+Self-custodial **multi-chain mobile wallet** (EVM, TRON, TON) built around **payment commitments** — track what you owe and what others owe you, then fulfill on the cheapest USDT rail. Powered by [Expo SDK 56](https://docs.expo.dev/) and the [Tether WDK](https://docs.tether.io/wdk/intro).
 
-1. Install dependencies
+> **Disclaimer:** Rune is an open-source **MVP / portfolio project**. It has **not** been professionally audited. Do **not** rely on it for large amounts of funds. See [SECURITY.md](SECURITY.md).
 
-   ```bash
-   npm install
-   ```
+## Features
 
-2. Start the app
+- **Payment commitments** — gifts, split bills, recurring, remittances, and custom promises in one hub
+- Onboarding: create / import wallet, 6-digit PIN, optional biometrics
+- Send & receive across Ethereum, Polygon, BNB Chain, TRON, TON
+- Portfolio, transaction history, themed UI with multiple palettes
+- Smart receive, chain health, contacts, spending vault, proof of payment
+- Security: secure seed storage, auto-lock, screen-capture block on seed screens, ESLint rules against logging secrets
 
-   ```bash
-   npx expo start
-   ```
+## Screenshots
 
-In the output, you'll find options to open the app in a
+<!-- Replace YOUR_USERNAME and add images under docs/screenshots/ -->
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| Wallet | Lock screen | Rune Tools |
+|--------|-------------|------------|
+| *Add `docs/screenshots/wallet-home.png`* | *Add `docs/screenshots/lock-screen.png`* | *Add `docs/screenshots/rune-tools.png`* |
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Quick start
 
-## Get a fresh project
-
-When you're ready, run:
+Rune **does not run in Expo Go** — the WDK worklet needs native modules.
 
 ```bash
-npm run reset-project
+git clone https://github.com/YOUR_USERNAME/Rune.git
+cd Rune
+npm install
+npx expo install --fix
+cp .env.example .env   # optional
+npx wdk-worklet-bundler generate
+npx expo prebuild --clean
+npx expo run:ios       # or: npx expo run:android
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+The worklet bundle is written to `.wdk-bundle/wdk-worklet.bundle.js` (gitignored). Without it, Metro cannot resolve the WDK import and the app will not start.
 
-### Other setup steps
+### Environment variables
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Copy [`.env.example`](.env.example). All keys are optional; public RPCs and CoinGecko / explorer APIs are used as fallbacks.
 
-## Learn more
+## Development
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm run start        # Metro
+npm run lint         # ESLint (+ security rules)
+npm run typecheck    # TypeScript
+npm test             # Vitest (pure services)
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for PR guidelines.
 
-## Join the community
+## Stack
 
-Join our community of developers creating universal apps.
+| Layer | Technology |
+|-------|------------|
+| App | Expo 56, Expo Router, React Native 0.85 |
+| Wallet | `@tetherto/wdk-react-native-core`, chain modules, secure storage |
+| State | Zustand |
+| Data | TanStack Query |
+| UI | Custom themed components + `react-native-qrcode-svg` |
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Project layout
+
+```
+src/
+  app/                 Expo Router (onboarding, tabs, modals, tools)
+  components/wallet/   PinPad, AuthGate, QRCard, …
+  services/            wdk, indexer, prices, chainHealth, formatters
+  store/               auth, preferences, session, contacts, use-cases
+  config/wdk.ts        Networks and assets
+docs/
+  ARCHITECTURE.md      System overview
+  screenshots/         README assets (add your PNGs here)
+```
+
+Full architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Security model
+
+- PIN hashed (SHA-256) in `expo-secure-store`
+- Mnemonic in WDK secure storage (Keychain / Keystore)
+- `AuthGate` locks on background and after inactivity (default 2 minutes)
+- Custom ESLint rules block logging `mnemonic`, `seed`, `pin`, `privateKey`, etc.
+
+Details: [SECURITY.md](SECURITY.md).
+
+## Commitments
+
+Rune is organized around **payment commitments** — promises between you and someone else:
+
+| Type | Description |
+|------|-------------|
+| Custom | Anything you owe or are owed, with optional due date |
+| Split bill | Each unpaid participant becomes an incoming commitment |
+| Gift envelope | Time-boxed gift with shareable receive link |
+| Recurring | Rent, stipend, or subscription on a schedule |
+| Remittance lane | Plan source → low-fee rail → destination |
+
+Supporting tools: smart receive, chain health, trusted contacts, spending vault, watch-only wallets, proof of payment.
+
+## Out of scope (MVP)
+
+Bridge, lending, fiat on-ramp, push notifications, multi-wallet, WalletConnect, NFTs, staking, ERC-4337. Swap UI is preview-only until WDK Velora is available on the public registry.
+
+## License
+
+[MIT](LICENSE) — Copyright (c) 2026 Moonbeam.
+
+## Acknowledgments
+
+Built with [Tether WDK](https://docs.tether.io/wdk/intro). Expo template portions are MIT-licensed by Expo.
