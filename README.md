@@ -15,15 +15,7 @@ Self-custodial **multi-chain mobile wallet** (EVM, TRON, TON) built around **pay
 - Portfolio, transaction history, themed UI with multiple palettes
 - Smart receive, chain health, contacts, spending vault, proof of payment
 - Security: secure seed storage, auto-lock, screen-capture block on seed screens, ESLint rules against logging secrets
-
-## Screenshots
-
-<!-- Replace YOUR_USERNAME and add images under docs/screenshots/ -->
-
-| Wallet | Lock screen | Rune Tools |
-|--------|-------------|------------|
-| *Add `docs/screenshots/wallet-home.png`* | *Add `docs/screenshots/lock-screen.png`* | *Add `docs/screenshots/rune-tools.png`* |
-
+- 
 ## Quick start
 
 Rune **does not run in Expo Go** — the WDK worklet needs native modules.
