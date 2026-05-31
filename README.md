@@ -81,8 +81,7 @@ Full architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - `AuthGate` locks on background and after inactivity (default 2 minutes)
 - Custom ESLint rules block logging `mnemonic`, `seed`, `pin`, `privateKey`, etc.
 
-Details: [SECURITY.md](SECURITY.md).
-
+  
 ## Commitments
 
 Rune is organized around **payment commitments** — promises between you and someone else:
