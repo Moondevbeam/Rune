@@ -80,11 +80,19 @@
           "cameraPermission": "Camera is used to scan recipient wallet addresses from QR codes."
         }
       ],
-      "expo-sharing"
+      "expo-sharing",
+      "expo-image"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "65015a15-8413-4072-a523-3ee3995b8130"
+      }
+    },
+    "owner": "moonwsx"
   }
 }

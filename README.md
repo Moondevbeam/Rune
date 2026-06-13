@@ -31,7 +31,7 @@ npx expo prebuild --clean
 npx expo run:ios       # or: npx expo run:android
 ```
 
-The worklet bundle is written to `.wdk-bundle/wdk-worklet.bundle.js` (gitignored). Without it, Metro cannot resolve the WDK import and the app will not start.
+The worklet bundle is written to `.wdk-bundle/wdk-worklet.bundle.js` (gitignored). Without it, Metro cannot resolve the WDK import and the app will not start. **EAS Build** regenerates it automatically via the `eas-build-post-install` script in `package.json`.
 
 ### Environment variables
 
@@ -95,6 +95,55 @@ Rune is organized around **payment commitments** — promises between you and so
 | Remittance lane | Plan source → low-fee rail → destination |
 
 Supporting tools: smart receive, chain health, trusted contacts, spending vault, watch-only wallets, proof of payment.
+
+## GitHub Release (APK) — guida rapida
+
+### Setup (una volta)
+
+```bash
+cd /Users/moonbeam/Rune   # il tuo path al progetto
+npm install
+npx eas login             # account gratis su expo.dev
+npx eas init              # collega il progetto a Expo
+```
+
+> `eas-cli` è già nel progetto (`npm install`). **Non** serve `npm install -g`.
+
+### Build APK + Release GitHub (manuale, 4 comandi)
+
+```bash
+cd /Users/moonbeam/Rune
+
+# 1) Build in cloud (~10-15 min). Aggiungi --wait per aspettare qui.
+npm run build:apk -- --wait
+
+# 2) Scarica l'APK sul Mac
+npm run download:apk
+
+# 3) Crea la release su GitHub (serve `gh` installato e loggato)
+gh release create v1.0.0 rune-wallet.apk \
+  --title "Rune Wallet v1.0.0" \
+  --generate-notes
+```
+
+Fatto. L’APK compare in **GitHub → Releases**.
+
+### Automatico con tag
+
+Dopo aver messo il secret `EXPO_TOKEN` su GitHub (Settings → Secrets → Actions):
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Il workflow [release.yml](.github/workflows/release.yml) builda e pubblica da solo.
+
+### Prima di distribuire
+
+- Change `android.package` in `app.json` from `com.anonymous.Rune` to your own ID.
+- Optional: add RPC API keys as [EAS environment variables](https://docs.expo.dev/build-reference/variables/) so balances work out of the box.
+- This APK is **preview / MVP** — not audited. See [SECURITY.md](SECURITY.md).
 
 ## Out of scope (MVP)
 

@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  android-apk:
+    name: Build APK & publish GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate WDK worklet bundle
+        run: npx wdk-worklet-bundler generate
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build Android APK (EAS)
+        run: eas build --platform android --profile preview --non-interactive --wait
+
+      - name: Download APK
+        run: eas build:download --platform android --latest --output rune-wallet.apk
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Rune Wallet ${{ github.ref_name }}
+          generate_release_notes: true
+          files: rune-wallet.apk
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
