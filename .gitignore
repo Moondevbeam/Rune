@@ -21,7 +21,10 @@ expo-env.d.ts
 # Metro
 .metro-health-check*
 
-# WDK worklet bundle (generated via `npx wdk-worklet-bundler generate`)
+# Build artifacts (distribute via GitHub Releases, not git)
+rune-wallet.apk
+*.apk
+
 .wdk/
 .wdk-bundle/
 .npm-cache/

@@ -92,7 +92,7 @@
     "test:watch": "vitest",
     "wdk:bundle": "wdk-worklet-bundler generate",
     "build:apk": "npm run wdk:bundle && eas build --platform android --profile preview",
-    "download:apk": "eas build:download --platform android --latest --output rune-wallet.apk",
+    "download:apk": "node scripts/download-apk.js",
     "eas-build-post-install": "npm run wdk:bundle"
   }
 }
